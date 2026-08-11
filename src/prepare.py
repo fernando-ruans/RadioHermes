@@ -80,7 +80,8 @@ class Preparer:
             # 1) origem da música
             if item["source"] == "youtube":
                 status_cb("baixando")
-                raw = os.path.join(self.fetcher.cache_dir, f"{item['vid']}.mp3")
+                raw = os.path.join(self.fetcher.cache_dir,
+                                   f"{item['vid'] or self.cache_key(item)}.mp3")
                 if not os.path.exists(raw):
                     self.fetcher.download(item["url"], raw)
                 music_in = raw

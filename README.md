@@ -28,6 +28,7 @@ em português — sempre coerente com a hora do dia.
 - [Build](#build)
 - [Estrutura do projeto](#estrutura-do-projeto)
 - [Testes](#testes)
+- [Correções](#correções)
 - [Roadmap](#roadmap)
 - [Licença](#licença)
 
@@ -325,6 +326,21 @@ manuais de integração). O plano é cobrir com `pytest`:
 - Brain: prompt por comportamento, coerência temporal, limpeza de resposta
 - Engine: fila, cache, prefetch, play/pause/next/prev
 - GUI offscreen: janela, cards, visualizador, settings
+
+---
+
+## Correções
+
+### [2026-08-11] Música errada ao adicionar por busca ou URL
+- **Sintoma:** o locutor anunciava o nome certo, mas o áudio que tocava era de
+  outra música (geralmente a primeira adicionada na sessão).
+- **Causa:** faixas adicionadas por busca ficavam sem o `vid` (o ID só era
+  extraído da URL quando o título ainda não existia). Sem `vid`, todas baixavam
+  para o mesmo arquivo `cache/None.mp3` — a 1ª música era baixada ali e as
+  seguintes **reaproveitavam esse arquivo** no lugar do áudio real.
+- **Correção:** o `vid` agora é sempre extraído da URL na adição; e o preparador
+  usa uma chave estável como fallback no nome do download, nunca mais o literal
+  `None.mp3`.
 
 ---
 

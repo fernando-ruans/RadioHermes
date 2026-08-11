@@ -182,7 +182,7 @@ class MainWindow(QMainWindow):
         URL na hora (o cache funciona de imediato) e o título/duração exatos
         chegam em background pelo InfoWorker."""
         url = clean_video_url(url)
-        vid = extract_video_id(url) if title is None else None
+        vid = extract_video_id(url)
         track = Track("youtube", title or "Carregando...",
                       vid=vid or None, url=url)
         self.engine.add_track(track)
