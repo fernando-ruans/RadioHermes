@@ -1,0 +1,77 @@
+# ============================================================
+#  RÁDIO HERMES — configuração de EXEMPLO
+#  Copie este arquivo para "config.toml" e ajuste as suas chaves.
+#  Este arquivo NÃO contém segredos e pode ser versionado.
+#
+#     cp config.example.toml config.toml     (Linux/macOS)
+#     copy config.example.toml config.toml   (Windows)
+# ============================================================
+
+[app]
+name = "Rádio Hermes Desktop"
+
+[player]
+auto_next = true          # avança pra próxima quando a atual termina
+loop = true               # reinicia a fila no fim
+prefetch = 2              # quantas faixas ficam preparadas com antecedência
+volume = 0.8
+
+[audio]
+sample_rate = 44100
+channels = 2
+bitrate = "128k"
+duck_gain_db = -18.0      # quanto baixa a música durante locução no meio
+
+[locucao]
+intro_enabled = true      # locução sempre ANTES de cada música
+outro_enabled = true      # locução sempre DEPOIS de cada música
+mid_enabled = true        # permite locução no MEIO da música (com ducking)
+mid_chance = 0.4          # probabilidade de locução no meio por faixa (0..1)
+mid_min_sec = 60          # música precisa ter ao menos isso p/ locução no meio
+# duração máxima (em segundos) de cada tipo de locução — a IA é guiada a
+# ficar nesse limite de tamanho ao gerar a fala
+max_dur_intro_sec = 8
+max_dur_outro_sec = 8
+max_dur_mid_sec = 5
+
+[brain]
+# mode: "template" (offline, roda já, sem chave) | "api" (LLM via endpoint)
+mode = "template"
+persona = "Você é o locutor da Rádio Hermes, uma rádio FM autônoma e descontraída. Você adora música, tem carisma e um bom humor leve. Fale como um locutor de rádio de verdade."
+temperature = 1.0
+
+[brain.api]
+# QUALQUER endpoint OpenAI-compatível funciona (BYOK). Exemplos:
+#   Gemini:  https://generativelanguage.googleapis.com/v1beta/openai
+#   Ollama:  http://localhost:11434/v1          (ex: modelo "gemma3:1b")
+#   LM Studio: http://localhost:1234/v1         (ex: "google/gemma-3-1b-it")
+#   OpenAI:  https://api.openai.com/v1
+#   Groq:    https://api.groq.com/openai/v1
+#   vLLM / llama.cpp: http://localhost:8000/v1
+base_url = "https://generativelanguage.googleapis.com/v1beta/openai"
+model = "gemini-3.1-flash-lite"
+# Modelo alternativo se o primário falhar. "" = desligado.
+fallback_model = ""
+# Tempo de cooldown quando uma chave falha (provedores com rate-limit)
+key_cooldown_sec = 60
+timeout_sec = 15             # timeout por chamada HTTP
+api_timeout_sec = 20         # timeout GLOBAL por locução (não trava o app)
+# Rotação de chaves (opcional — 1 chave já funciona).
+# Provedores locais sem auth (Ollama/LM Studio): pode deixar vazio ou usar
+# uma chave dummy como "local" — o header Bearer é ignorado por eles.
+keys = [
+  "COLE_SUA_CHAVE_AQUI",
+]
+
+[voice]
+engine = "edge-tts"
+voice = "pt-BR-FranciscaNeural"   # ou pt-BR-AntonioNeural (masculina)
+rate = "+0%"
+volume = "+0%"
+
+[cache]
+dir = "cache"
+prep_dir = "cache/prep"
+max_duration_sec = 900
+min_duration_sec = 15
+download_timeout_sec = 240

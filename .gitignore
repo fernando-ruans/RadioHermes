@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+# config local com chaves de API — NUNCA versionar
+config.toml
+config.local.toml
+cache/
+*.log
+*.mp3
+_*.py
+build/
+dist/
+*.spec
